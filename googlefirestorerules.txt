@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // API-fetched quotes — readable by all authenticated or anonymous users
+    match /quotes/{quoteId} {
+      allow read: if true;
+      allow write: if true;   // App writes fetched quotes here
+    }
+
+    // User's own custom quotes — full CRUD
+    match /my_quotes/{quoteId} {
+      allow read, write: if true;
+    }
+
+    // Ravyn Drop — daily featured quote
+    match /ravyn_drop/{docId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}
